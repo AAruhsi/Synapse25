@@ -41,7 +41,7 @@ export default function PerformersCarousel() {
         scrollTrigger: {
           trigger: triggerRef.current,
           start: "top top",
-          end: "+=300%",
+          end: "+300vw",
           scrub: 0.6,
           pin: true,
           anticipatePin: 1,
@@ -55,7 +55,7 @@ export default function PerformersCarousel() {
   }, []);
   return (
     <main className="container min-h-screen">
-      <section className="overflow-hidden">
+      <section className="">
         <div ref={triggerRef}>
           <div ref={sectionRef} className="flex h-screen w-[400vw] bg-black">
             {pages.map((page) => (
@@ -75,7 +75,7 @@ export default function PerformersCarousel() {
                 <h2
                   className={`text-8xl  text-white absolute bottom-20 z-10 ${almendra.className}`}
                 >
-                  {/* {page.name} */}EVENTS
+                  {page.name}
                 </h2>
               </div>
             ))}

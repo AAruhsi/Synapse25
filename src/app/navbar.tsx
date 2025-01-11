@@ -3,13 +3,8 @@ import Image from "next/image";
 import CircleLogo from "./assets/SVGID.png";
 import { useRouter } from "next/navigation";
 
-import { Roboto } from "next/font/google";
 import { Almendra_SC } from "next/font/google";
 
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
 
 const almendra = Almendra_SC({
   subsets: ["latin"],
@@ -20,11 +15,11 @@ export default function Navbar() {
   const router = useRouter();
 
   useEffect(() => {
-    const logo = document.querySelector(".CircleLogo");
+    const logo = document.querySelector(".CircleLogo") as HTMLImageElement;
     if (logo) {
       window.addEventListener("scroll", () => {
         const scrolled = window.scrollY;
-        logo.style.transform = `rotate(${0.2 * scrolled}deg)`;
+        logo.style.transform = `rotate(${0.1 * scrolled}deg)`;
       });
     }
   }, []);
@@ -58,7 +53,7 @@ export default function Navbar() {
             src={CircleLogo}
             onClick={() => router.push("/")}
             alt="Synapse Logo"
-            className="w-[4rem] h-[4rem]"
+            className="w-[4rem] h-[4rem] CircleLogo"
             priority
           />
           <div className="navflex">
@@ -176,7 +171,7 @@ export default function Navbar() {
                 </svg>
               </div>
             </div>
-{/*
+            {/*
             <div
               className="navptags navp2"
               onClick={() => router.push("/Merchendise")}
