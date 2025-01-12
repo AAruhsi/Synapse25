@@ -2,9 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+html{
+  overflow: auto;
+  overscroll-behavior: none;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
-  overflow: auto;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 @layer base {

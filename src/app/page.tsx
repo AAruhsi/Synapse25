@@ -1,37 +1,56 @@
 "use client"
 
 import HomePage from "./homePage";
-import Image from 'next/image'
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
 
   const [progress, setProgress] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const loadingTime = 1; // Total loading time in seconds
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const interval = 100; // Update interval in milliseconds
-    const step = 100 / (loadingTime * (1000 / interval));
+    const totalAssets = document.images.length; // Total number of images on the page
+    let loadedAssets = 0;
 
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(timer);
-          setLoading(false);
-          return 100;
-        }
-        return prev + step;
-      });
-    }, interval);
+    const updateProgress = () => {
+      loadedAssets++;
+      const percentage = Math.round((loadedAssets / totalAssets) * 100);
+      setProgress(percentage);
+    };
 
-    return () => clearInterval(timer);
-  }, [loadingTime]);
+    const images = Array.from(document.images);
+    images.forEach((img) => {
+      if (img.complete) {
+        updateProgress(); // If the image is already loaded
+      } else {
+        img.addEventListener('load', updateProgress);
+        img.addEventListener('error', updateProgress); // Handle failed loads
+      }
+    });
+
+    // Handle the case when all assets are fully loaded
+    const handleLoad = () => {
+      setProgress(100); // Ensure progress is set to 100%
+      setTimeout(() => {
+        setIsLoading(false); // Hide loader after 2 seconds
+      }, 2000);
+    };
+
+    if (document.readyState === 'complete') {
+      handleLoad();
+    } else {
+      window.addEventListener('load', handleLoad);
+    }
+
+    return () => window.removeEventListener('load', handleLoad);
+
+  }, []);
 
   return (
     <>
-      {loading 
-      ? <div>
+      {isLoading
+        ? <div>
           <div className="bg-black min-h-screen flex flex-col items-center justify-center">
             <div className="bg-black overflow-hidden text-center animation-container">
               <Image
@@ -89,7 +108,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      : <HomePage />}
+        : <HomePage />}
     </>
   );
 }
